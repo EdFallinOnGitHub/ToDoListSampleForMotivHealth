@@ -1,0 +1,30 @@
+
+* {
+  font-size: 16pt;
+  font-family: sans-serif;
+  padding: 1rem;
+  box-sizing: border-box;
+}
+
+body {
+  box-sizing: border-box;
+}
+
+h1 {
+  font-size: 200%;
+}
+
+main {
+  padding: 1rem;
+  background: gainsboro;
+  border: solid midnightblue 10rem;
+  border-top-width: 2rem;
+  border-bottom-width: 2rem;
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
