@@ -1,0 +1,35 @@
+.card {
+  width: 95%;
+  margin: .75rem auto;
+  padding: .5rem;
+  border: solid gainsboro .0625rem;
+  box-shadow: gray .5rem .5rem .25rem;
+}
+
+.grid {
+  display: inline-grid;
+  width: 100%;
+  grid-template-columns: 75% 25%;
+}
+
+input[type="checkbox"] {
+  transform: scale(1.75, 1.75);
+  margin-top: -2rem;
+  padding-bottom: 3rem;
+  margin-bottom: .5rem;
+}
+
+textarea {
+  font-size: 100%;
+}
+
+.button-band {
+  display: flex;
+  justify-content: flex-end;
+}
+
+button {
+  font-size: 100%;
+  margin: auto .25rem;
+  padding: .25rem;
+}

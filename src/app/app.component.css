@@ -12,6 +12,8 @@ body {
 
 h1 {
   font-size: 200%;
+  width: fit-content;
+  margin: auto;
 }
 
 main {
@@ -22,9 +24,5 @@ main {
   border-bottom-width: 2rem;
   width: 100%;
   min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
 }
 

@@ -1,1 +1,22 @@
-<p>item works!</p>
+<div class="card">
+  <div class="grid">
+    <div style="grid-column: 1/1">
+      <input type="checkbox">
+      {{ order }}
+
+      @if (isEditing) {
+        <textarea name="task" id="task" cols="50" rows="1" placeholder="Add task here." [(value)]="task"></textarea>
+      }
+      @else {
+        {{ task }}
+      }
+    </div>
+
+    <div style="grid-column: 2/2" class="button-band">
+      <button id="editOrSave" (click)="editOrSave()">{{ !isEditing ? "\u270D" : "\u21A9" }}</button>
+      <button id="shiftUp">&uarr;</button>
+      <button id="shiftDown">&darr;</button>
+      <button id="remove">&#x2613;</button>
+    </div>
+  </div>
+</div>

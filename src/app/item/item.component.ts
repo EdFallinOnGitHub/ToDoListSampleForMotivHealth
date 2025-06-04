@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-item',
@@ -8,5 +8,19 @@ import { Component } from '@angular/core';
   styleUrl: './item.component.css'
 })
 export class ItemComponent {
+  @Input({ required: true }) order!: number;
+  @Input() uid?: number;
+  @Input({ required: true }) task!: string;
+  @Input() completed?: boolean;
+
+  isEditing = false;
+
+  editOrSave() {
+    if (this.isEditing) {
+      /* &cruft, save */
+    }
+
+    this.isEditing = !this.isEditing;
+  }
 
 }
