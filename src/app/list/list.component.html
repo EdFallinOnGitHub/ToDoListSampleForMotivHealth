@@ -1,6 +1,6 @@
 <div class="card">
-  <app-item [order]=1 [uid]="1" [task]="Task A" [completed]=true></app-item>
-  <app-item [order]=2 [uid]="4" [task]="Task D" [completed]=false></app-item>
-  <app-item [order]=3 [uid]="3" [task]="Task C" [completed]=true></app-item>
-  <app-item [order]=4 [uid]="2" [task]="Task B" [completed]=false></app-item>
+  @for (item of items; track item.uid) {
+    <app-item [order]="$index + 1" [uid]="item.uid" [task]="item.task" [completed]="item.completed"
+              (doSave)="save($event)" (doLift)="lift(item.uid)" (doDrop)="drop(item.uid)" (doRemove)="remove(item.uid)" />
+  }
 </div>

@@ -5,18 +5,18 @@
       {{ order }}
 
       @if (isEditing) {
-        <textarea name="task" id="task" cols="50" rows="1" placeholder="Add task here." [(value)]="task"></textarea>
+        <textarea name="task" id="task-textarea" cols="50" rows="1" placeholder="Add task here." [(ngModel)]="task"></textarea>
       }
       @else {
-        {{ task }}
+        <span id="task-span">{{ task }}</span>
       }
     </div>
 
     <div style="grid-column: 2/2" class="button-band">
       <button id="editOrSave" (click)="editOrSave()">{{ !isEditing ? "\u270D" : "\u21A9" }}</button>
-      <button id="shiftUp">&uarr;</button>
-      <button id="shiftDown">&darr;</button>
-      <button id="remove">&#x2613;</button>
+      <button id="shiftUp" (click)="doLift.emit()">&uarr;</button>
+      <button id="shiftDown" (click)="doDrop.emit()">&darr;</button>
+      <button id="remove" (click)="doRemove.emit()">&#x2613;</button>
     </div>
   </div>
 </div>

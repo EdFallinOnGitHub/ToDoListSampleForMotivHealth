@@ -2,6 +2,7 @@
   width: 95%;
   margin: .75rem auto;
   padding: .5rem;
+  background: whitesmoke;
   border: solid gainsboro .0625rem;
   box-shadow: gray .5rem .5rem .25rem;
 }
@@ -30,6 +31,16 @@ textarea {
 
 button {
   font-size: 100%;
+  border: none;
+  border-radius: 0;
+  box-shadow: gray 0.125rem 0.125rem 0.125rem;
+  font-weight: bold;
+  background: whitesmoke;
   margin: auto .25rem;
   padding: .25rem;
+}
+
+button:active {
+  color: white;
+  background: darkgray;
 }

@@ -10,5 +10,5 @@ import { ListComponent } from "./list/list.component";
   styleUrl: "./app.component.css"
 })
 export class AppComponent {
-  title = "To-Do List";
+  title = "So You Want to Do Some Things";
 }
