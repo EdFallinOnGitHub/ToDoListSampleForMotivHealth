@@ -3,6 +3,7 @@ import { ItemComponent } from "../item/item.component";
 import { Item } from "../definitions/Item";
 import { NewItemComponent } from "../new-item/new-item.component";
 import { TemporaryItemSource } from "../operations/TemporaryItemSource";
+import { ItemSourceService } from "../operations/item-source.service";
 import { ListMaintainer } from "../operations/ListMaintainer";
 
 @Component({
@@ -18,10 +19,10 @@ export class ListComponent {
 
   isAdding= false;
 
-  constructor() {
-    let source = new TemporaryItemSource();
-    this.items = source.items;
-
+  constructor(private source: ItemSourceService) {
+    let tempSource = new TemporaryItemSource();
+    this.items = tempSource.items;
+    console.log(`cruft : this.items:`, this.items);
     this.maintainer = new ListMaintainer(this.items);
   }
 
