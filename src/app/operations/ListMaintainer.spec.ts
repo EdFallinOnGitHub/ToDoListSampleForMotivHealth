@@ -40,7 +40,7 @@ describe("ListMaintainer", () => {
       let added = target.items[order];  // Order = new length -1.
 
       // All default values together.
-      expect(added.order).toBe(order);
+      expect(added.order).toBe(order + 1);  // Order is 1-based.
       expect(added.uid).toBe(0);
       expect(added.task).toBe(arg);
       expect(added.completed).toBeFalse();

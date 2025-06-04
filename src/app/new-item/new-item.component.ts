@@ -14,4 +14,18 @@ export class NewItemComponent {
 
   @Output() doSave = new EventEmitter<string>();
   @Output() doCancel = new EventEmitter();
+
+  save() {
+    this.doSave.emit(this.task);
+    this.erase();
+  }
+
+  cancel() {
+    this.doCancel.emit();
+    this.erase();
+  }
+
+  erase() {
+    this.task = "";
+  }
 }

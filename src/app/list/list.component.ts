@@ -16,6 +16,8 @@ export class ListComponent {
   items: Array<Item>;
   maintainer: ListMaintainer;
 
+  isAdding= false;
+
   constructor() {
     let source = new TemporaryItemSource();
     this.items = source.items;
@@ -25,32 +27,35 @@ export class ListComponent {
 
   // region Event listeners
 
+  displayAdder() {
+    this.isAdding = true;
+  }
+
+  add(task: string) {
+    this.maintainer.add(task);
+    this.hideAdder();
+  }
+
+  hideAdder() {
+    this.isAdding = false;
+  }
+
   save(item: { order: number, uid: number, task: string, completed: boolean }) {
     this.saveChangedItem(item!);
-    alert("To be saved.");
   }
 
   raise(uid: number) {
-    // Reordering list.
     this.maintainer.raise(uid);
-
-    // All changes saved immediately.
     this.saveChangedList();
   }
 
   lower(uid: number) {
-    // Reordering list.
     this.maintainer.lower(uid);
-
-    // All changes saved immediately.
     this.saveChangedList();
   }
 
   remove(uid: number) {
-    // Removing, then reordering list.
     this.maintainer.remove(uid);
-
-    // All changes saved immediately.
     this.saveChangedList();
   }
 

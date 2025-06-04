@@ -8,7 +8,7 @@ export class ListMaintainer {
   // Major methods
 
   add(task: string) /* p */ {
-    let toAdd = new Item(this.items.length, 0, task, false);
+    let toAdd = new Item(this.items.length + 1, 0, task, false);
     this.items.push(toAdd);
   }
 

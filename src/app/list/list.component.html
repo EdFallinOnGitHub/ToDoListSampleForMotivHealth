@@ -4,5 +4,12 @@
               (doSave)="save($event)" (doLift)="raise(item.uid)" (doDrop)="lower(item.uid)" (doRemove)="remove(item.uid)" />
   }
 
-  <app-new-item></app-new-item>
+  @if(!isAdding) {
+    <div class="right-align">
+      <button id="doAdd" (click)="displayAdder()">+</button>
+    </div>
+  }
+  @else {
+    <app-new-item (doSave)="add($event)" (doCancel)="hideAdder()"></app-new-item>
+  }
 </div>
