@@ -1,0 +1,13 @@
+<div class="card">
+  <div class="grid">
+    <div style="grid-column: 1/1">
+      New:
+      <textarea name="task" id="task-textarea" cols="50" rows="1" placeholder="Add task here." [(ngModel)]="task"></textarea>
+    </div>
+
+    <div style="grid-column: 2/2" class="button-band">
+      <button id="save" (click)="doSave.emit(task)">{{ "\u21A9" }}</button>
+      <button id="cancel" (click)="doCancel.emit()">&#x2613;</button>
+    </div>
+  </div>
+</div>

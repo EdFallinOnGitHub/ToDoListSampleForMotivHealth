@@ -28,5 +28,4 @@ export class ItemComponent {
 
     this.isEditing = !this.isEditing;
   }
-
 }
