@@ -5,49 +5,39 @@ namespace ToDoListServer;
 [ApiController]
 [Route("items")]
 public class ItemController : ControllerBase {
-    private List<Item> fakes = new() {
-        new Item(1, 1, "Task A1", false),
-        new Item(2, 2, "Task B2", false),
-        new Item(3, 3, "Task C3", false),
-        new Item(4, 4, "Task D4", false),
-        new Item(5, 5, "Task E5", false)
-    };
+    ItemRepository items;
 
-    public ItemController() {
-        ItemDataSource whatever = new();
+    public ItemController(ItemRepository items) {
+        this.items = items;
     }
 
     [HttpGet("")]
     public async Task<ActionResult<IEnumerable<Item>>> GetAllItemsAsync() {
-        List<Item> items = await Task.FromResult(fakes);
-        return Ok(items);
+        IEnumerable<Item> output = await items.GetAllAsync();
+        return Ok(output);
     }
 
     [HttpPost("")]
-    public async Task<ActionResult> PostNewItemAsync(NewItem added) {
-        int next = fakes.Count + 1;
-        Item item = new(next, next, added.Task, false);
-        fakes.Add(item);
+    public async Task<ActionResult> PostNewItemAsync(NewItemTask taskToAdd) {
+        // .Task, some defaults, and defaults that are overwritten when saved.
+        Item toAdd = new Item(0, 0, taskToAdd.Task, false);
+        Item added = await items.AddNewAsync(toAdd);
 
         // Request URL properties all include trailing "/". 
-        string url = $"{Request.Scheme}://{Request.Host}{Request.Path}{item.UID}";
+        string url = $"{Request.Scheme}://{Request.Host}{Request.Path}{added.UID}";
 
-        return Created(url, item);
+        return Created(url, added);
     }
     
     [HttpPut("")]
     public async Task<ActionResult> PutChangedItemAsync(Item changed) {
-        int target = fakes.FindIndex(x => x.UID == changed.UID);
-        fakes[target] = changed;
-        Console.WriteLine(fakes);
+        await items.ChangeExistingAsync(changed);
         return NoContent();
     }
     
     [HttpDelete("{uid}")]
     public async Task<ActionResult> DeleteItemAsync(int uid) {
-        int target = fakes.FindIndex(x => x.UID == uid);
-        fakes.RemoveAt(target);
-        Console.WriteLine(fakes);
+        await items.DeleteExistingAsync(uid);
         return NoContent();
     }
 }

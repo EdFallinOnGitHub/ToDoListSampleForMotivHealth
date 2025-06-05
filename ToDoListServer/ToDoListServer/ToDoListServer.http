@@ -29,7 +29,7 @@ Accept: application/json
 
 ###
 
-DELETE {{ToDoListServer_HostAddress}}/items/3
+DELETE {{ToDoListServer_HostAddress}}/items/2
 Accept: application/json
 
 ###

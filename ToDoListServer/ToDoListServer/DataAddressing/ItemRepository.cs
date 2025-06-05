@@ -52,6 +52,10 @@ public class ItemRepository {
     #region Internals
 
     private int HighestOrder() /* v */ {
+        // First new Item only.
+        if (this.source.Items.Count() == 0) { return 0; }
+
+        // All other Items.
         int output = this.source.Items.Max(x => x.Order);
         return output;
     }
