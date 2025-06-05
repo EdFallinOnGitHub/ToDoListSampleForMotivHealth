@@ -13,10 +13,8 @@ public class ItemController : ControllerBase {
         new Item(5, 5, "Task E5", false)
     };
 
-    private readonly ILogger<ItemController> _logger;
-
-    public ItemController(ILogger<ItemController> logger) {
-        _logger = logger;
+    public ItemController() {
+        ItemDataSource whatever = new();
     }
 
     [HttpGet("")]
