@@ -1,6 +1,35 @@
 @ToDoListServer_HostAddress = http://localhost:5107
 
-GET {{ToDoListServer_HostAddress}}/weatherforecast/
+GET {{ToDoListServer_HostAddress}}/items/
+Accept: application/json
+
+###
+
+POST {{ToDoListServer_HostAddress}}/items/
+Content-Type: application/json
+Accept: application/json
+
+{
+  "task": "New Task Z26"
+}
+
+###
+
+PUT {{ToDoListServer_HostAddress}}/items/
+Content-Type: application/json
+Accept: application/json
+
+{
+  "order": 25,
+  "uid": 2,
+  "task": "Task Changed",
+  "completed": true
+}
+
+
+###
+
+DELETE {{ToDoListServer_HostAddress}}/items/3
 Accept: application/json
 
 ###
