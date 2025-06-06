@@ -1,8 +1,8 @@
 <div class="card">
   <div class="grid">
     <div style="grid-column: 1/1" class="low">
-      <input type="checkbox">
-      {{ order }}
+      <input type="checkbox" [(ngModel)]="completed" (change)="setCompleted()">
+      &nbsp; {{ order }}: &nbsp;
 
       @if (isEditing) {
         <textarea name="task" id="task-textarea" cols="50" rows="1" placeholder="Add task here." [(ngModel)]="task"></textarea>

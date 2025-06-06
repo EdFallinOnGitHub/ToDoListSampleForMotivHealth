@@ -11,14 +11,14 @@ public class ItemController : ControllerBase {
         this.items = items;
     }
 
-    [HttpGet("")]
-    public async Task<ActionResult<IEnumerable<Item>>> GetAllItemsAsync() {
+    [HttpGet]
+    public async Task<ActionResult<IEnumerable<Item>>> GetAllItemsAsync() /* v */ {
         IEnumerable<Item> output = await items.GetAllAsync();
         return Ok(output);
     }
 
-    [HttpPost("")]
-    public async Task<ActionResult> PostNewItemAsync(NewItemTask taskToAdd) {
+    [HttpPost]
+    public async Task<ActionResult> PostNewItemAsync(NewItemTask taskToAdd) /* v */ {
         // .Task, some defaults, and defaults that are overwritten when saved.
         Item toAdd = new Item(0, 0, taskToAdd.Task, false);
         Item added = await items.AddNewAsync(toAdd);
@@ -29,14 +29,14 @@ public class ItemController : ControllerBase {
         return Created(url, added);
     }
     
-    [HttpPut("")]
-    public async Task<ActionResult> PutChangedItemAsync(Item changed) {
+    [HttpPut]
+    public async Task<ActionResult> PutChangedItemAsync(Item changed) /* v */ {
         await items.ChangeExistingAsync(changed);
         return NoContent();
     }
     
     [HttpDelete("{uid}")]
-    public async Task<ActionResult> DeleteItemAsync(int uid) {
+    public async Task<ActionResult> DeleteItemAsync(int uid) /* v */ {
         await items.DeleteExistingAsync(uid);
         return NoContent();
     }

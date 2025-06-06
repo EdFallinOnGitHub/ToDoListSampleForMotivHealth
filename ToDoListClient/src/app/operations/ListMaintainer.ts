@@ -7,9 +7,8 @@ export class ListMaintainer {
 
   // Major methods
 
-  add(task: string) /* p */ {
-    let toAdd = new Item(this.items.length + 1, 0, task, false);
-    this.items.push(toAdd);
+  add(item: Item) /* ? */ {
+    this.items.push(item);
   }
 
   remove(uid: number) /* p */ {
@@ -19,28 +18,34 @@ export class ListMaintainer {
     this.reorder(at);
   }
 
-  raise(uid: number) /* p */ {
+  raise(uid: number): Item[] /* p */ {
     let at = this.retrieveIndexBy(uid);
 
     // Nowhere to raise to.
-    if (at === 0) { return; }
+    if (at === 0) { return []; }
 
     // Splice out, then back in, then save reordering.
     let local = this.items.splice(at, 1);
     this.items.splice(at -1, 0, ...local);
     this.reorder(at, at -1);
+
+    // Return the swapped items.
+    return [ this.items[at -1], this.items[at] ];
   }
 
-  lower(uid: number) {
+  lower(uid: number): Item[] {
     let at = this.retrieveIndexBy(uid);
 
     // Nowhere to lower to.
-    if (at >= this.items.length -1) { return; }
+    if (at >= this.items.length -1) { return []; }
 
     // Splice out, then back in, then save ordering.
     let local = this.items.splice(at, 1);
     this.items.splice(at +1, 0, ...local);
     this.reorder(at, at +1);
+
+    // Swapped items may be needed downstream.
+    return [ this.items[at], this.items[at +1] ];
   }
 
   // endregion Major methods

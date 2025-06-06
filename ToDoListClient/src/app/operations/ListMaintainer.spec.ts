@@ -27,23 +27,19 @@ describe("ListMaintainer", () => {
     it("adds new Item at end of .items", /* v/p */ () => {
       let pre = target.items.length;
 
-      let arg = "Task U";
+      let arg = new Item(3, 7, "Task U", true);
       target.add(arg);
 
       expect(target.items.length).toBe(pre + 1);
     });
 
     it("sets default values on new Item", /* v/p */ () => {
-      let order = target.items.length;
-      let arg = "Task W";
+      let arg = new Item(6, 8, "Task W", true);
       target.add(arg);
-      let added = target.items[order];  // Order = new length -1.
+      let added = target.items[target.items.length -1];
 
       // All default values together.
-      expect(added.order).toBe(order + 1);  // Order is 1-based.
-      expect(added.uid).toBe(0);
-      expect(added.task).toBe(arg);
-      expect(added.completed).toBeFalse();
+      expect(added).toEqual(arg);
     });
   });
 

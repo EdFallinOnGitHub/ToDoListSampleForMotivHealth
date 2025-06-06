@@ -17,6 +17,7 @@ public class ItemDataSource : DbContext {
     protected virtual void Init() {
         // Created, but not first destroyed,
         // for real-data persistence.
+        // Database.EnsureDeleted();  /* &> remove later? */
         Database.EnsureCreated();
     }
 

@@ -1,8 +1,8 @@
 import { Component } from "@angular/core";
+import { Observable } from "rxjs";
 import { ItemComponent } from "../item/item.component";
 import { Item } from "../definitions/Item";
 import { NewItemComponent } from "../new-item/new-item.component";
-import { TemporaryItemSource } from "../operations/TemporaryItemSource";
 import { ItemSourceService } from "../operations/item-source.service";
 import { ListMaintainer } from "../operations/ListMaintainer";
 
@@ -14,104 +14,80 @@ import { ListMaintainer } from "../operations/ListMaintainer";
   styleUrl: "./list.component.css"
 })
 export class ListComponent {
-  items: Array<Item>;
-  maintainer: ListMaintainer;
+  items: Array<Item> = [];
+  maintainer!: ListMaintainer;
 
   isAdding= false;
 
   constructor(private source: ItemSourceService) {
-    let tempSource = new TemporaryItemSource();
-    this.items = tempSource.items;
-    console.log(`cruft : this.items:`, this.items);
-    this.maintainer = new ListMaintainer(this.items);
+    // Get existing items now, and make them locally malleable.
+    source.items.subscribe(x => {
+      this.items = x;
+      this.maintainer = new ListMaintainer(this.items);
+    });
   }
 
   // region Event listeners
 
-  displayAdder() {
+  /* Listed in quasi-chronological order: you create,
+     you move around, you check / change, you delete. */
+
+  displayAdder() /* v */ {
     this.isAdding = true;
   }
 
-  add(task: string) {
-    this.maintainer.add(task);
-    this.hideAdder();
+  add(task: string) /* v */ {
+    // Adding afar, then adding that here.
+    this.source.add(task)
+      .subscribe(x => {
+        this.maintainer.add(x);
+        this.hideAdder();
+      });
   }
 
-  hideAdder() {
+  hideAdder() /* v */ {
     this.isAdding = false;
   }
 
-  save(item: { order: number, uid: number, task: string, completed: boolean }) {
-    this.saveChangedItem(item!);
+  raise(uid: number) /* v */ {
+    // Changes here, then saves changes afar.
+    let swapped = this.maintainer.raise(uid);
+    if (swapped.length !== 2) { return; }  // At top.
+    this.changeSwapped(swapped);
   }
 
-  raise(uid: number) {
-    this.maintainer.raise(uid);
-    this.saveChangedList();
+  lower(uid: number) /* v */ {
+    // Changes here, then saves changes afar.
+    let swapped = this.maintainer.lower(uid);
+    if (swapped.length !== 2) { return; }  // At bottom.
+    this.changeSwapped(swapped);
   }
 
-  lower(uid: number) {
-    this.maintainer.lower(uid);
-    this.saveChangedList();
+  changeSwapped(swapped: Item[]) /* v */ {
+    let first = swapped[0];
+    let second = swapped[1];
+
+    // Async but synchronized changes at server.
+    this.change(first)
+      .subscribe(
+        () => this.change(second)
+          .subscribe(() => { })
+      );
   }
 
-  remove(uid: number) {
-    this.maintainer.remove(uid);
-    this.saveChangedList();
+  save(item: Item) {
+    this.change(item).subscribe(() => { });
+  }
+
+  change(item: Item): Observable<void> /* v */ {
+    return this.source.change(item);
+  }
+
+  remove(uid: number) /* v */ {
+    // Removing here and afar.
+    this.source.remove(uid)
+      .subscribe(x => this.maintainer.remove(uid));
   }
 
   // endregion Event listeners
-
-  // region Local dependencies of event listeners
-
-  private retrieveItemBy(uid: number) {
-    return this.items.find(x => x.uid === uid);
-  }
-
-  private retrieveIndexBy(uid: number) {
-    return this.items.findIndex(x => x.uid === uid);
-  }
-
-  private reorder(first: number, anySecond?: number) {
-    if (anySecond === undefined) {
-      // When item is removed, following need renumbering.
-      this.reorderRemainder(first);
-    }
-    else {
-      // When items are swapped, only they need renumbering.
-      this.reorderSwapped(first, anySecond!);
-    }
-  }
-
-  private reorderRemainder(first: number) {
-      for (let at = first; at < this.items.length; at++) {
-        this.items[at].order = at + 1;
-      }
-  }
-
-  private reorderSwapped(first: number, second: number) {
-    this.items[first].order = first + 1;
-    this.items[second].order = second + 1;
-  }
-
-  // endregion Local dependencies of event listeners
-
-  // region Remote-calling dependencies of event listeners
-
-  saveNewItem(task: string) {
-    /* &> save using back end,
-          retrieve from back end,
-          add to .items
-    */
-  }
-
-  saveChangedItem(item: { order: number, uid: number, task: string, completed: boolean }) {
-    /* &> save using back end */
-  }
-
-  saveChangedList() {
-    /* &> save using back end */
-  }
-
-  // endregion Remote-calling dependencies of event listeners
 }
